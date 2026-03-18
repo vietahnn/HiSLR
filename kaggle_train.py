@@ -92,7 +92,13 @@ import numpy as np
 from pathlib import Path
 from tqdm.notebook import tqdm
 
-mp_holistic = mp.solutions.holistic
+# Fix cho mediapipe >= 0.10.13
+try:
+    mp_holistic = mp.solutions.holistic
+    print("mediapipe:", mp.__version__, "→ dùng mp.solutions")
+except AttributeError:
+    import mediapipe.python.solutions.holistic as mp_holistic
+    print("mediapipe:", mp.__version__, "→ dùng mediapipe.python.solutions")
 
 def extract_skeleton_from_video(video_path: str, output_path: str) -> bool:
     """Extract MediaPipe Holistic keypoints từ 1 video."""
